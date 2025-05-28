@@ -1,0 +1,13 @@
+events {
+    worker_connections   2000;
+
+    use epoll;
+}
+
+http {
+	server {
+		listen 8080;
+		index index.html;
+		root /app/data;
+	}
+}
