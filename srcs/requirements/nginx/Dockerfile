@@ -24,17 +24,14 @@ RUN mkdir -p /var/cache/nginx /var/log/nginx/ && touch /run/nginx.pid \
 	&& chown nginx_user:nginx_group /var/cache/nginx /var/log/nginx/ /run/nginx.pid \
 	&& chmod -R 700 /var/cache/nginx /var/log/nginx/ /run/nginx.pid
 
-WORKDIR /app
-
-RUN mkdir data
-
-COPY . .
-
-RUN mv conf /etc/nginx/nginx.conf
-
 USER nginx_user
 
+WORKDIR /app
+
 EXPOSE 8080
+
+COPY conf /etc/nginx/nginx.conf
+COPY . .
 
 CMD ["nginx", "-g", "daemon off;"]
 

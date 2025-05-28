@@ -9,6 +9,6 @@ http {
 		listen 8080;
 		ssl_protocols TLSv1.2 TLSv1.3;
 		index index.html;
-		root /app/data;
+		root /app;
 	}
 }
