@@ -22,6 +22,12 @@ RUN set -e \
 	&& rm -rf latest.tar.gz wordpress
 
 
+WORKDIR /app
+COPY . .
+
+RUN set -e \
+	&& conf_dir=$(find /etc/php* -name 'php-fpm.d') \
+	&& mv conf "$conf_dir"/www.conf
 
 USER wp_user
 

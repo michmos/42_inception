@@ -1,0 +1,21 @@
+; pool name
+[wordpress_site]
+listen = localhost:9000
+; security measures
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; config process manager
+; mode
+pm = dynamic
+pm.max_children = 20
+; num childs to create on startup
+pm.start_servers = 5
+; min num childs to be 'idle' / waiting
+pm.min_spare_servers = 2
+pm.max_spare_servers = 5
+pm.process_idle_timeout = 10s
+
+; set environment variables for spawned childs
+env[HOSTNAME] = $HOSTNAME
+env[TMP] = /tmp
