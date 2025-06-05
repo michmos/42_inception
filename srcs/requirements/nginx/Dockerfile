@@ -27,9 +27,15 @@ RUN mkdir -p /var/cache/nginx /var/log/nginx/ && touch /run/nginx.pid \
 
 WORKDIR /app
 
-COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY . .
 
-EXPOSE 8080
+# move files
+RUN set -e \
+	&& mv conf/nginx.conf /etc/nginx/nginx.conf \
+	&& mkdir -p /etc/ssl/certs/ \
+	&& chown nginx_user:nginx_group tools/certificate/* \
+	&& mv tools/certificate/* /etc/ssl/certs/
+
 
 USER nginx_user
 
