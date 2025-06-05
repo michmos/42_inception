@@ -31,4 +31,4 @@ RUN set -e \
 
 USER wp_user
 
-CMD ["/bin/sh"]
+CMD ["php-fpm", "-F"]
