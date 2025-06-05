@@ -1,0 +1,31 @@
+# These groups are read by MariaDB server.
+# Use it for options that only the server (but not clients) should see
+
+# this is read by the standalone daemon and embedded servers
+[server]
+
+# this is only for the mysqld standalone daemon
+[mysqld]
+
+# Basic settings
+user=mysql
+port=3306
+bind-address=0.0.0.0
+
+# Character set and collation
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci #defines how db stores and compares text
+
+# InnoDB settings
+innodb_file_per_table=1 # each table has its own .ibd file
+
+# Logging
+log_error=/var/log/mysql/error.log
+
+# Security
+skip-symbolic-links
+skip-external-locking
+
+# Connection limits
+max_connections=100
+

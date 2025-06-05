@@ -9,6 +9,8 @@ RUN set -e \
 	&& mkdir -p /run/mysqld \
 	&& chown mysql:mysql /run/mysqld
 
+COPY conf/mariadb-server.cnf /etc/my.cnf.d/
+
 USER mysql
 
 CMD ["mysqld"]
