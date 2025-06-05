@@ -25,9 +25,10 @@ RUN set -e \
 WORKDIR /app
 COPY . .
 
+# move files
 RUN set -e \
 	&& conf_dir=$(find /etc/php* -name 'php-fpm.d') \
-	&& mv conf "$conf_dir"/www.conf
+	&& mv conf/www.conf "$conf_dir"/www.conf
 
 USER wp_user
 
