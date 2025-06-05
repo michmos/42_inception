@@ -28,7 +28,8 @@ COPY . .
 # move files
 RUN set -e \
 	&& conf_dir=$(find /etc/php* -name 'php-fpm.d') \
-	&& mv conf/www.conf "$conf_dir"/www.conf
+	&& mv conf/www.conf "$conf_dir"/www.conf \
+	&& mv conf/wp-config.php /var/www/html/
 
 USER wp_user
 
