@@ -1,6 +1,6 @@
 ; pool name
 [wordpress_site]
-listen = localhost:9000
+listen = 9000
 ; security measures
 php_admin_value[disable_functions] = exec,passthru,shell_exec,system
 php_admin_flag[allow_url_fopen] = off
