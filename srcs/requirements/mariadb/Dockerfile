@@ -2,15 +2,13 @@
 FROM alpine:3.20
 
 RUN apk update && apk upgrade
-RUN apk add mariadb mariadb-client
+RUN apk add mariadb mariadb-client su-exec
 
 RUN set -e \
-	&& mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql \
 	&& mkdir -p var/log/mysql /run/mysqld  \
 	&& chown mysql:mysql var/log/mysql /run/mysqld
 
 COPY conf/mariadb-server.cnf /etc/my.cnf.d/
+COPY entrypoint.sh .
 
-USER mysql
-
-CMD ["mysqld"]
+CMD ["/bin/sh", "entrypoint.sh"]
