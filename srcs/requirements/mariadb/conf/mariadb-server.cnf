@@ -10,7 +10,7 @@
 # Basic settings
 user=mysql
 port=3306
-bind-address=0.0.0.0
+bind-address=0.0.0.0 #allow remote clients
 
 # Character set and collation
 character-set-server=utf8mb4
