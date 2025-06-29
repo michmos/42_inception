@@ -4,6 +4,7 @@ RUN apk update && apk upgrade
 RUN apk add --no-cache \
 	curl \
 	su-exec \
+	mariadb-client \
 	php83 \
 	php83-fpm \
 	php83-phar\
