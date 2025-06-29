@@ -21,7 +21,7 @@ RUN addgroup -S nginx_group && adduser -S nginx_user -G nginx_group
 
 # create dirs required by nginx and give nginx_user permissions
 RUN mkdir -p /var/cache/nginx /var/log/nginx/ && touch /run/nginx.pid \
-	&& chown nginx_user:nginx_group /var/cache/nginx /var/log/nginx/ /run/nginx.pid \
+	&& chown -R nginx_user:nginx_group /var/cache/nginx /var/log/nginx/ /run/nginx.pid \
 	&& chmod -R 700 /var/cache/nginx /var/log/nginx/ /run/nginx.pid
 
 
@@ -33,7 +33,7 @@ COPY . .
 RUN set -e \
 	&& mv conf/nginx.conf /etc/nginx/nginx.conf \
 	&& mkdir -p /etc/ssl/certs/ \
-	&& chown nginx_user:nginx_group tools/certificate/* \
+	&& chown -R nginx_user:nginx_group tools/certificate/* \
 	&& mv tools/certificate/* /etc/ssl/certs/
 
 
