@@ -2,7 +2,7 @@
 
 set -e
 
-if [ ! -d "/var/www/html/wp-config.php" ]; then
+if [ ! -f "/var/www/html/wp-config.php" ]; then
 	mkdir -p /var/www/html
 	chown wp_user:wp_group /var/www/html
 	chmod 755 /var/www/html
