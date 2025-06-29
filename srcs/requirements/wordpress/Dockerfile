@@ -40,7 +40,6 @@ RUN set -e \
 
 RUN set -e \
 	&& mkdir -p /var/www/html \
-	&& chown -R wp_user:wp_group /var/www/html \
 	&& chmod 755 /var/www/html \
 	&& php -d memory_limit=512M /usr/local/bin/wp core download --path=/var/www/html
 

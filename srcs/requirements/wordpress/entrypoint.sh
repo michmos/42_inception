@@ -13,6 +13,8 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
 		sleep 2
 	done
 	wp core install --path=/var/www/html/ --url=$WEBSITE_URL --title=$WEBSITE_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL --skip-email
+	# after installing all directories and files should be owned by wp_user
+	chown -R wp_user:wp_group /var/www/html
 fi
 
 exec su-exec wp_user php-fpm -F
