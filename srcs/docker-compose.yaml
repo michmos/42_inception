@@ -6,6 +6,7 @@ services:
       - "443:443"
     volumes:
       - wp-data:/var/www/html
+    restart: always
   wordpress:
     container_name: wordpress
     build: requirements/wordpress/
@@ -14,13 +15,18 @@ services:
       - db
     volumes:
       - wp-data:/var/www/html
+    restart: always
   db:
     container_name: mariadb
     build: requirements/mariadb/
     env_file: "conf.env"
     volumes:
       - db-data:/var/lib/mysql
+    restart: always
 
 volumes:
   db-data:
   wp-data:
+
+# add 127.0.0.1 mmoser.42.fr to /etc/hosts on virtual machine
+
