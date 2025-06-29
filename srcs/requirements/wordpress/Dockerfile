@@ -21,6 +21,7 @@ RUN apk add --no-cache \
 	php83-apcu \
 	php83-opcache \
 	php83-redis \
+	php83-tokenizer \
 	php83-pecl-igbinary \
 	php83-pecl-imagick \
 	php83-pecl-memcached
