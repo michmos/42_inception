@@ -6,6 +6,7 @@ RUN apk add --no-cache \
 	su-exec \
 	mariadb-client \
 	php83 \
+	php83-xmlreader \
 	php83-fpm \
 	php83-phar\
 	php83-json \
