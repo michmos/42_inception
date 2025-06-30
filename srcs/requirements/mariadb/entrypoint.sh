@@ -1,13 +1,20 @@
 #! /bin/sh
 set -e
 
+# install db
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-	# init data directory - where db is stored
 	mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+fi
+
+# configure database
+if [ ! -d "/var/lib/mysql/.mariadb_configured" ]; then
 	# run safe daemon for initialization without networking (clients can't connect)
 	mysqld_safe --skip-networking &
-	# wait for db to become ready
 	sleep 5
+
+	# get credentials from secrets
+	MARIADB_PASSWORD=$(cat $MARIADB_PASSWORD_FILE)
+	MARIADB_ROOT_PASSWORD=$(cat $MARIADB_ROOT_PASSWORD_FILE)
 
 	# create db and set user permissions
 	mysql -e "CREATE DATABASE IF NOT EXISTS ${MARIADB_DATABASE};"
@@ -16,6 +23,8 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
 	# shutdown mysqld_safe
 	mysqladmin shutdown --password=${MARIADB_ROOT_PASSWORD}
+	# mark successful installation
+	touch /var/lib/mysql/.mariadb_configured
 fi
 
 # run actual mysqld as mysql
