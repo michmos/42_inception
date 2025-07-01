@@ -13,16 +13,17 @@ if [ ! -d "/var/lib/mysql/.mariadb_configured" ]; then
 	sleep 5
 
 	# get credentials from secrets
-	MARIADB_PASSWORD=$(cat $MARIADB_PASSWORD_FILE)
-	MARIADB_ROOT_PASSWORD=$(cat $MARIADB_ROOT_PASSWORD_FILE)
+	MARIADB_PASSWORD=$(cat "$MARIADB_PASSWORD_FILE")
+	MARIADB_ROOT_PASSWORD=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
 
 	# create db and set user permissions
 	mysql -e "CREATE DATABASE IF NOT EXISTS ${MARIADB_DATABASE};"
 	mysql -e "CREATE USER '${MARIADB_USER}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';"
 	mysql -e "GRANT ALL ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'%';"
 	mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
+	#TODO: flush privileges?
 	# shutdown mysqld_safe
-	mysqladmin shutdown --password=${MARIADB_ROOT_PASSWORD}
+	mysqladmin shutdown --password="${MARIADB_ROOT_PASSWORD}"
 	# mark successful installation
 	touch /var/lib/mysql/.mariadb_configured
 fi
