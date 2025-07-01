@@ -37,14 +37,25 @@ echo "$root_password" > secrets/db_root_password.txt
 
 #wp
 echo -e "\nwp"
+
 db_prefix="$(getValue "db prefix: ")"
 echo "WP_DB_PREFIX=$db_prefix" >> $ENV_FILE
+
 admin_user="$(getValue "admin user name: ")"
 echo "WP_ADMIN_USER=$admin_user" >> $ENV_FILE
 password="$(getValue "admin password: ")"
 echo "$password" > secrets/wp_admin_password.txt
 mail="$(getValue "admin mail: ")"
 echo "WP_ADMIN_EMAIL=$mail" >> $ENV_FILE
+
+user="$(getValue "user name: ")"
+echo "WP_USER=$user" >> $ENV_FILE
+password="$(getValue "user password: ")"
+echo "$password" > secrets/wp_user_password.txt
+mail="$(getValue "user mail: ")"
+echo "WP_USER_EMAIL=$mail" >> $ENV_FILE
+
+
 url="$(getValue "website url (e.g. https://localhost): ")"
 echo "WP_WEBSITE_URL=$url" >> $ENV_FILE
 title="$(getValue "website titel: ")"

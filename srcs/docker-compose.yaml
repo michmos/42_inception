@@ -20,7 +20,11 @@ services:
     secrets:
       - db_password
       - wp_admin_password
+      - wp_user_password
     environment:
+      - WP_USER=${WP_USER}
+      - WP_USER_EMAIL=${WP_USER_EMAIL}
+      - WP_USER_PASSWORD_FILE=/run/secrets/wp_user_password
       - WP_ADMIN_USER=${WP_ADMIN_USER}
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
       - WP_ADMIN_PASSWORD_FILE=/run/secrets/wp_admin_password
@@ -59,6 +63,8 @@ secrets:
     file: ../secrets/db_root_password.txt
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
+  wp_user_password:
+    file: ../secrets/wp_user_password.txt
 
 # add 127.0.0.1 mmoser.42.fr to /etc/hosts on virtual machine
 
