@@ -6,6 +6,7 @@ services:
       - "443:443"
     volumes:
       - wp-data:/var/www/html
+      - ../secrets/certificate/:/etc/ssl/certs/:ro
     restart: always
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}

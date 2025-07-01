@@ -2,7 +2,7 @@
 
 ENV_FILE="srcs/.env"
 echo "" > srcs/.env
-mkdir -p secrets
+mkdir -p secrets/certificate
 
 getValue() {
 	local prompt=$1
@@ -60,4 +60,21 @@ url="$(getValue "website url (e.g. https://localhost): ")"
 echo "WP_WEBSITE_URL=$url" >> $ENV_FILE
 title="$(getValue "website titel: ")"
 echo "WP_WEBSITE_TITLE=$title" >> $ENV_FILE
+
+echo -e "\nDo you want to create a self-signed certificate? (y/n)"
+if [[ $(getValue "Answer: ") == "y" ]]; then
+	cert_name="$(getValue "certificate name (e.g. localhost): ")"
+	country_code="$(getValue "country code (2 letter code): ")"
+	state="$(getValue "state or province name: ")"
+	locality="$(getValue "locality name (e.g. city): ")"
+	organization="$(getValue "company name: ")"
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+		-keyout secrets/certificate/key.pem \
+		-out secrets/certificate/cert.pem \
+		-subj "/C=$country_code/ST=$state/L=$locality/O=$organization/CN=$cert_name" 2> /dev/null
+	chmod 644 secrets/certificate/key.pem secrets/certificate/cert.pem
+else
+	echo "No self-signed certificate will be created. Please provide your the following files yourself:\n- secrets/certificate/key.pem\n- secrets/certificate/cert.pem"
+fi
+
 

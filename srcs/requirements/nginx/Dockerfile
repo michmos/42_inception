@@ -2,7 +2,7 @@ FROM alpine:3.20
 
 # installing nginx
 # 	installing prerequisites
-RUN apk add openssl curl ca-certificates \
+RUN apk add curl ca-certificates \
 	# set up apk repo for stable nginx packages
 	&& printf "%s%s%s%s\n" \
     "@nginx " \
@@ -20,22 +20,11 @@ RUN apk add openssl curl ca-certificates \
 RUN addgroup -S nginx_group && adduser -S nginx_user -G nginx_group
 
 # create dirs required by nginx and give nginx_user permissions
-RUN mkdir -p /var/cache/nginx /var/log/nginx/ && touch /run/nginx.pid \
+RUN mkdir -p /var/cache/nginx /var/log/nginx/ /etc/ssl/certs/ && touch /run/nginx.pid \
 	&& chown -R nginx_user:nginx_group /var/cache/nginx /var/log/nginx/ /run/nginx.pid \
-	&& chmod -R 700 /var/cache/nginx /var/log/nginx/ /run/nginx.pid
+	&& chmod -R 700 /var/cache/nginx /var/log/nginx/ /run/nginx.pid /etc/ssl/certs/
 
-
-WORKDIR /app
-
-COPY . .
-
-# move files
-RUN set -e \
-	&& mv conf/nginx.conf /etc/nginx/nginx.conf \
-	&& mkdir -p /etc/ssl/certs/ \
-	&& chown -R nginx_user:nginx_group tools/certificate/* \
-	&& mv tools/certificate/* /etc/ssl/certs/
-
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 
 USER nginx_user
 
