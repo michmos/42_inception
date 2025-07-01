@@ -7,7 +7,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 fi
 
 # configure database
-if [ ! -d "/var/lib/mysql/.mariadb_configured" ]; then
+if [ ! -f "/var/lib/mysql/.mariadb_configured" ]; then
 	# run safe daemon for initialization without networking (clients can't connect)
 	mysqld_safe --skip-networking &
 	sleep 5
@@ -21,7 +21,7 @@ if [ ! -d "/var/lib/mysql/.mariadb_configured" ]; then
 	mysql -e "CREATE USER '${MARIADB_USER}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';"
 	mysql -e "GRANT ALL ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'%';"
 	mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
-	#TODO: flush privileges?
+	mysql -e "FLUSH PRIVILEGES;" --password="${MARIADB_ROOT_PASSWORD}"
 	# shutdown mysqld_safe
 	mysqladmin shutdown --password="${MARIADB_ROOT_PASSWORD}"
 	# mark successful installation
