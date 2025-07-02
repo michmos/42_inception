@@ -1,22 +1,22 @@
 services:
-  server:
-    container_name: nginx
+  nginx:
     build: requirements/nginx/
+    container_name: nginx
     ports:
       - "443:443"
     volumes:
-      - wp-data:/var/www/html
+      - /home/${USER}/data/wordpress/:/var/www/html:ro
       - ../secrets/certificate/:/etc/ssl/certs/:ro
     restart: always
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
   wordpress:
-    container_name: wordpress
     build: requirements/wordpress/
+    container_name: wordpress
     depends_on:
-      - db
+      - mariadb
     volumes:
-      - wp-data:/var/www/html
+      - /home/${USER}/data/wordpress/:/var/www/html
     restart: always
     secrets:
       - db_password
@@ -31,17 +31,17 @@ services:
       - WP_ADMIN_PASSWORD_FILE=/run/secrets/wp_admin_password
       - WP_DB=${MARIADB_DATABASE}
       - WP_DB_PREFIX=${WP_DB_PREFIX}
-      - WP_DB_HOST=db
+      - WP_DB_HOST=mariadb
       - WP_DB_PORT=3306
       - WP_DB_USER=${MARIADB_USER}
       - WP_DB_PASSWORD_FILE=/run/secrets/db_password
-      - WP_WEBSITE_URL=${WP_WEBSITE_URL}
+      - WP_WEBSITE_URL=${WP_WEBSITE_URL} #TODO: maybe this should be https://${DOMAIN_NAME} and not be part of setup.sh
       - WP_WEBSITE_TITLE=${WP_WEBSITE_TITLE}
-  db:
-    container_name: mariadb
+  mariadb:
     build: requirements/mariadb/
+    container_name: mariadb
     volumes:
-      - db-data:/var/lib/mysql
+      - /home/${USER}/data/mysql/:/var/lib/mysql
     restart: always
     secrets:
       - db_password
@@ -51,11 +51,6 @@ services:
       - MARIADB_PASSWORD_FILE=/run/secrets/db_password
       - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db_password
       - MARIADB_DATABASE=${MARIADB_DATABASE}
-
-
-volumes:
-  db-data:
-  wp-data:
 
 secrets:
   db_password:

@@ -9,10 +9,10 @@ WP_USER_PASSWORD=$(cat $WP_USER_PASSWORD_FILE)
 
 # create wp-config.php
 if [ ! -f "/var/www/html/wp-config.php" ]; then
+	mv /app/wp/* /var/www/html/
 	wp config create --path=/var/www/html/ --dbname="$WP_DB" --dbuser="$WP_DB_USER" --dbpass="$WP_DB_PASSWORD" --dbhost="$WP_DB_HOST:$WP_DB_PORT" --dbprefix="$WP_DB_PREFIX" --skip-check
 	wp config set FS_METHOD direct --config-file=/var/www/html/wp-config.php
 fi
-
 
 # install wordpress
 if [ ! -f "/var/www/html/.wp_initialized" ]; then
@@ -28,4 +28,4 @@ if [ ! -f "/var/www/html/.wp_initialized" ]; then
 	chown -R wp_user:wp_group /var/www/html
 fi
 
-exec su-exec wp_user php-fpm -F
+exec su-exec wp_user php-fpm83 -F
