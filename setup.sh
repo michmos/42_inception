@@ -55,9 +55,6 @@ echo "$password" > secrets/wp_user_password.txt
 mail="$(getValue "user mail: ")"
 echo "WP_USER_EMAIL=$mail" >> $ENV_FILE
 
-
-url="$(getValue "website url (e.g. https://localhost): ")"
-echo "WP_WEBSITE_URL=$url" >> $ENV_FILE
 title="$(getValue "website titel: ")"
 echo "WP_WEBSITE_TITLE=$title" >> $ENV_FILE
 
