@@ -9,7 +9,7 @@ fi
 # configure database
 if [ ! -f "/var/lib/mysql/.mariadb_configured" ]; then
 	# run safe daemon for initialization without networking (clients can't connect)
-	mysqld_safe --skip-networking &
+	mariadbd-safe --skip-networking &
 	sleep 5
 
 	# get credentials from secrets
@@ -17,16 +17,16 @@ if [ ! -f "/var/lib/mysql/.mariadb_configured" ]; then
 	MARIADB_ROOT_PASSWORD=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
 
 	# create db and set user permissions
-	mysql -e "CREATE DATABASE IF NOT EXISTS ${MARIADB_DATABASE};"
-	mysql -e "CREATE USER '${MARIADB_USER}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';"
-	mysql -e "GRANT ALL ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'%';"
-	mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
-	mysql -e "FLUSH PRIVILEGES;" --password="${MARIADB_ROOT_PASSWORD}"
+	mariadb -e "CREATE DATABASE IF NOT EXISTS ${MARIADB_DATABASE};"
+	mariadb -e "CREATE USER '${MARIADB_USER}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';"
+	mariadb -e "GRANT ALL ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'%';"
+	mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
+	mariadb -e "FLUSH PRIVILEGES;" --password="${MARIADB_ROOT_PASSWORD}"
 	# shutdown mysqld_safe
-	mysqladmin shutdown --password="${MARIADB_ROOT_PASSWORD}"
+	mariadb-admin shutdown --password="${MARIADB_ROOT_PASSWORD}"
 	# mark successful installation
 	touch /var/lib/mysql/.mariadb_configured
 fi
 
 # run actual mysqld as mysql
-exec su-exec mysql mysqld
+exec su-exec mysql mariadbd
