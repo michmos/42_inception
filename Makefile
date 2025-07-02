@@ -1,5 +1,8 @@
 PROJECT_DIR	:=	srcs
 
+run: .setup_done
+	docker compose --project-directory $(PROJECT_DIR) up --detach
+
 setup:
 	@bash setup.sh
 	$(MAKE) build
@@ -10,9 +13,6 @@ setup:
 
 build:
 	docker compose --project-directory $(PROJECT_DIR) build
-
-run: .setup_done
-	docker compose --project-directory $(PROJECT_DIR) up --detach
 
 logs:
 	docker compose --project-directory $(PROJECT_DIR) logs -f
