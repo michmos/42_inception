@@ -5,7 +5,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - /home/${USER}/data/wordpress/:/var/www/html:ro
+      - wp_data:/var/www/html/:ro
       - ../secrets/certificate/:/etc/ssl/certs/:ro
     restart: always
     environment:
@@ -16,8 +16,8 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - /home/${USER}/data/wordpress/:/var/www/html
     restart: always
+      - wp_data:/var/www/html/
     secrets:
       - db_password
       - wp_admin_password
@@ -41,8 +41,8 @@ services:
     build: requirements/mariadb/
     container_name: mariadb
     volumes:
-      - /home/${USER}/data/mysql/:/var/lib/mysql
     restart: always
+      - db_data:/var/lib/mysql/
     secrets:
       - db_password
       - db_root_password
@@ -51,6 +51,19 @@ services:
       - MARIADB_PASSWORD_FILE=/run/secrets/db_password
       - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db_password
       - MARIADB_DATABASE=${MARIADB_DATABASE}
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USER}/data/mysql/
+      o: bind
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USER}/data/wordpress/
+      o: bind
 
 secrets:
   db_password:

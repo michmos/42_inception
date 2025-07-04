@@ -4,6 +4,7 @@ run: .setup_done
 	docker compose --project-directory $(PROJECT_DIR) up --detach
 
 setup:
+	mkdir -p /home/$(USER)/data/wordpress/ /home/$(USER)/data/mysql/
 	@bash setup.sh
 	$(MAKE) build
 	@touch .setup_done
