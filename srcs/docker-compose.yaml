@@ -49,7 +49,7 @@ services:
     environment:
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD_FILE=/run/secrets/db_password
-      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db_password
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
       - MARIADB_DATABASE=${MARIADB_DATABASE}
 volumes:
   db_data:
