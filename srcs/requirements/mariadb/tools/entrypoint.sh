@@ -19,7 +19,9 @@ if [ ! -f "/var/lib/mysql/.mariadb_configured" ]; then
 	# create db and set user permissions
 	mariadb -e "CREATE DATABASE IF NOT EXISTS ${MARIADB_DATABASE};"
 	mariadb -e "CREATE USER '${MARIADB_USER}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';"
+	mariadb -e "CREATE USER '${MARIADB_USER}'@'localhost' IDENTIFIED BY '${MARIADB_PASSWORD}';"
 	mariadb -e "GRANT ALL ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'%';"
+	mariadb -e "GRANT ALL ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'localhost';"
 	mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
 	mariadb -e "FLUSH PRIVILEGES;" --password="${MARIADB_ROOT_PASSWORD}"
 	# shutdown mysqld_safe
