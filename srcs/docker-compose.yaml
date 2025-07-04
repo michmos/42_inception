@@ -19,6 +19,7 @@ services:
       timeout: 1s
       retries: 10
       start_period: 10s
+      start_interval: 1s
   wordpress:
     build: requirements/wordpress/
     container_name: wordpress
@@ -53,6 +54,7 @@ services:
       timeout: 1s
       retries: 10
       start_period: 10s
+      start_interval: 1s
 
   mariadb:
     build: requirements/mariadb/
@@ -74,6 +76,7 @@ services:
       timeout: 1s
       retries: 10
       start_period: 10s
+      start_interval: 1s
 
 volumes:
   db_data:
