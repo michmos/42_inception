@@ -10,11 +10,21 @@ services:
     restart: always
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
+    depends_on:
+      wordpress:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "pidof", "nginx"]
+      interval: 5s
+      timeout: 1s
+      retries: 10
+      start_period: 10s
   wordpress:
     build: requirements/wordpress/
     container_name: wordpress
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     volumes:
     restart: always
       - wp_data:/var/www/html/
@@ -37,6 +47,12 @@ services:
       - WP_DB_PASSWORD_FILE=/run/secrets/db_password
       - WP_WEBSITE_URL=https://${DOMAIN_NAME}
       - WP_WEBSITE_TITLE=${WP_WEBSITE_TITLE}
+    healthcheck:
+      test: ["CMD-SHELL", "find /var/www/html/.wp_initialized && pidof php-fpm83"]
+      interval: 5s
+      timeout: 1s
+      retries: 10
+      start_period: 10s
   mariadb:
     build: requirements/mariadb/
     container_name: mariadb
@@ -51,6 +67,12 @@ services:
       - MARIADB_PASSWORD_FILE=/run/secrets/db_password
       - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
       - MARIADB_DATABASE=${MARIADB_DATABASE}
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb ${MARIADB_DATABASE} -h localhost -u root --password=\"$(cat /run/secrets/db_root_password)\""]
+      interval: 5s
+      timeout: 1s
+      retries: 10
+      start_period: 10s
 volumes:
   db_data:
     driver: local
