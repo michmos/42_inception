@@ -102,5 +102,3 @@ secrets:
   wp_user_password:
     file: ../secrets/wp_user_password.txt
 
-#TODO: add 127.0.0.1 mmoser.42.fr to /etc/hosts on virtual machine
-
