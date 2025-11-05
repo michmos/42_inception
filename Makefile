@@ -22,9 +22,7 @@ stop:
 	docker compose --project-directory $(PROJECT_DIR) stop
 
 clean:
-	rm -f .setup_done
 	docker compose --project-directory $(PROJECT_DIR) down --volumes --rmi all
-	rm -rf secrets srcs/.env
 
 re:
 	$(MAKE) clean
